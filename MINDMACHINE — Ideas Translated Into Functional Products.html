@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MINDMACHINE — Ideas Translated Into Functional Products</title>
+<style>
+:root{--bg:#08090D;--bg2:#0E1017;--panel:#12151E;--text:#F5F7FF;--mute:#969CAD;--violet:#8B5CF6;--blue:#45A3FF;--ok:#36D399;--warn:#FBBF24;--err:#FB7185;--line:#232838;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Geist,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em;font-size:13px}
+.btn{background:transparent;border:1px solid var(--line);padding:8px 14px;border-radius:4px;font-weight:600;letter-spacing:.06em;font-size:12px}
+.btn:hover{border-color:var(--violet)}
+.btn.pri{background:var(--violet);border-color:var(--violet);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+/* landing */
+#landing{min-height:100%;position:relative;overflow:hidden;background:radial-gradient(ellipse at 70% 0,#8B5CF622,transparent 55%),var(--bg)}
+#landing nav{display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;border-bottom:1px solid var(--line)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding:8vh 5vw 6vh;align-items:center}
+h1{font-size:clamp(34px,6vw,76px);line-height:.98;margin:0 0 22px;font-weight:900;letter-spacing:-.03em}
+h1 span{color:var(--violet)}
+.hero p{color:var(--mute);font-size:17px;max-width:520px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.cta .btn{padding:13px 22px}
+.viz{border:1px solid var(--line);background:var(--bg2);aspect-ratio:1;max-width:460px;width:100%;justify-self:center}
+.sec{padding:6vh 5vw;border-top:1px solid var(--line)}
+.sec h2{font-size:12px;letter-spacing:.2em;color:var(--mute);margin:0 0 24px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.grid>div{background:var(--bg);padding:22px}
+.grid b{display:block;margin-bottom:6px;font-size:15px}
+.grid span{color:var(--mute)}
+.note{color:var(--mute);font-size:12px;margin-top:18px}
+/* app */
+#app{display:none;height:100%;flex-direction:column}
+header.top{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap}
+.sp{flex:1}
+.pname{color:var(--mute)}
+.status{font-size:12px;display:inline-flex;gap:6px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.main{flex:1;display:grid;grid-template-columns:250px minmax(320px,1fr) minmax(360px,1.2fr);min-height:0}
+aside,.center,.prev{min-height:0;overflow:auto;display:flex;flex-direction:column}
+aside{border-right:1px solid var(--line);padding:18px;background:var(--bg2)}
+aside h3{margin:0;font-size:12px;letter-spacing:.2em}
+aside .sub{color:var(--mute);font-size:12px;margin:2px 0 16px}
+.steps{position:relative;padding-left:0}
+.steps:before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:1px;background:var(--line)}
+.step{position:relative;display:flex;gap:12px;padding:8px 0;opacity:.5}
+.step.on{opacity:1}.step.done{opacity:.8}
+.num{flex:none;width:27px;height:27px;border:1px solid var(--line);background:var(--bg2);display:grid;place-items:center;font-size:10px;font-weight:700;z-index:1}
+.step.on .num{border-color:var(--violet);color:var(--violet)}
+.step.done .num{background:var(--ok);color:#000;border-color:var(--ok)}
+.step b{font-size:13px;display:block}.step small{color:var(--mute);font-size:11.5px;display:block;line-height:1.4}
+.bar{height:3px;background:var(--line);margin:14px 0}.bar i{display:block;height:100%;background:var(--violet);transition:width .4s}
+aside .btn{width:100%;margin-top:8px}
+.center{border-right:1px solid var(--line)}
+.chead{padding:14px 18px;border-bottom:1px solid var(--line)}
+.chead b{font-size:12px;letter-spacing:.2em}.chead div{color:var(--mute);font-size:12px}
+#log{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:92%;padding:10px 14px;border:1px solid var(--line);white-space:pre-wrap;word-wrap:break-word}
+.msg.u{align-self:flex-end;background:#8B5CF61f;border-color:#8B5CF655}
+.msg.a{background:var(--panel)}.msg.e{border-color:var(--err);color:var(--err)}
+.msg time{display:block;color:var(--mute);font-size:10.5px;margin-top:4px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cards button{text-align:left;background:var(--panel);border:1px solid var(--line);padding:12px;font-size:12.5px}
+.cards button:hover{border-color:var(--violet)}
+.act{padding:12px 18px;border-top:1px solid var(--line);background:var(--bg2);display:none}
+.act canvas{width:100%;height:46px;display:block}
+.tl{display:flex;gap:4px;margin-top:8px;font-size:10px;letter-spacing:.08em;color:var(--mute);flex-wrap:wrap}
+.tl span{padding:2px 6px;border:1px solid var(--line)}.tl .cur{border-color:var(--violet);color:var(--text)}.tl .ok{color:var(--ok);border-color:var(--ok)}.tl .bad{color:var(--err);border-color:var(--err)}
+.ind{height:2px;background:var(--line);margin-top:8px;overflow:hidden;position:relative}.ind i{position:absolute;height:100%;width:30%;background:var(--violet);animation:sl 1.3s linear infinite}
+@keyframes sl{from{left:-30%}to{left:100%}}
+.inp{padding:12px 18px;border-top:1px solid var(--line)}
+textarea{width:100%;min-height:76px;max-height:200px;resize:vertical;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:10px;font:inherit}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;color:var(--mute);font-size:11.5px;gap:8px}
+.prev{background:var(--bg)}
+.phead{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.phead b{font-size:12px;letter-spacing:.2em;margin-right:auto}
+.seg button{border:1px solid var(--line);background:none;padding:5px 9px;font-size:11.5px}.seg button[aria-pressed=true]{background:var(--violet);border-color:var(--violet)}
+.stage{flex:1;min-height:0;display:flex;justify-content:center;background:repeating-linear-gradient(0deg,transparent 0 23px,#ffffff06 23px 24px),var(--bg2);padding:10px;overflow:auto;position:relative}
+iframe{border:1px solid var(--line);background:#fff;height:100%;width:100%;max-width:100%;transition:width .25s}
+.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px}
+.empty b{letter-spacing:.2em;font-size:13px}.empty div{color:var(--mute);margin-top:6px}
+pre.code{margin:0;flex:1;overflow:auto;padding:14px;font:12px/1.5 ui-monospace,Menlo,monospace;color:#cfd4ff;white-space:pre-wrap;word-break:break-all}
+.vers{padding:8px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--mute);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tabsm{display:none}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);max-width:480px}
+dialog::backdrop{background:#000a}
+@media(max-width:1100px){.main{grid-template-columns:220px 1fr}.prev{display:none}.main.showp .prev{display:flex;grid-column:1/-1}.main.showp .center,.main.showp aside{display:none}.tabsm{display:inline-block}}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.main{grid-template-columns:1fr}aside{display:none}.main.showside aside{display:flex}.main.showside .center{display:none}.cards{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root:not([data-theme=light]){color-scheme:dark}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mm" viewBox="0 0 32 32"><path d="M3 28V6l8 9v13M29 28V6l-8 9v13" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-linejoin="miter"/><path d="M11 15l5 6 5-6" fill="none" stroke="#45A3FF" stroke-width="3"/><rect x="14" y="3" width="4" height="4" fill="#F5F7FF"/></symbol></defs></svg>
+
+<div id="landing">
+<nav><span class="logo"><svg width="26" height="26" aria-hidden="true"><use href="#mm"/></svg>MINDMACHINE</span><button class="btn pri" data-go>START BUILDING</button></nav>
+<section class="hero"><div>
+<h1>YOUR IDEA.<br>OUR MACHINE.<br><span>YOUR NEXT BIG THING.</span></h1>
+<p>From your first prompt to a functional digital product. Build websites and web pages without getting lost in the complexity.</p>
+<div class="cta"><button class="btn pri" data-go>START BUILDING</button><button class="btn" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">EXPLORE HOW IT WORKS</button></div>
+<p class="note">Describe your idea · Generate your product · Preview and refine · Export and launch</p></div>
+<canvas id="hv" class="viz" role="img" aria-label="Animated network of connected nodes that follows your cursor"></canvas><svg style="display:none" class="viz" viewBox="0 0 400 400" role="img" aria-label="Idea nodes connecting into a web page"><g stroke="#8B5CF6" stroke-opacity=".5" fill="none"><path d="M60 80L150 150L130 260L230 220L320 120M230 220L300 320M150 150L230 220"/></g><g fill="#12151E" stroke="#45A3FF"><circle cx="60" cy="80" r="7"/><circle cx="150" cy="150" r="9"/><circle cx="130" cy="260" r="7"/><circle cx="230" cy="220" r="11"/><circle cx="320" cy="120" r="7"/><circle cx="300" cy="320" r="7"/></g><circle r="3" fill="#F5F7FF"><animateMotion dur="6s" repeatCount="indefinite" path="M60 80L150 150L230 220L320 120"/></circle></svg>
+</section>
+<section class="sec" id="how"><h2>HOW IT WORKS</h2><div class="grid"><div><b>01 Describe</b><span>Write what you want: audience, style, features, goals.</span></div><div><b>02 Generate</b><span>A model writes a single-file responsive website from your brief.</span></div><div><b>03 Preview &amp; refine</b><span>See it in a sandboxed preview and request changes in chat.</span></div></div></section>
+<section class="sec"><h2>WHAT IT DOES TODAY</h2><div class="grid"><div><b>Static &amp; interactive sites</b><span>Landing pages, portfolios, business sites, calculators, forms (client-side).</span></div><div><b>Revisions &amp; checkpoints</b><span>Edit by message; roll back to any earlier version.</span></div><div><b>Export</b><span>Download the generated HTML file.</span></div></div>
+<p class="note">Not supported yet: backend APIs, databases, authentication, one-click deployment. Those need a server environment this page does not have.</p></section>
+<section class="sec"><h2>USE CASES</h2><div class="grid"><div><b>Students</b><span>Project showcases and course sites.</span></div><div><b>Businesses</b><span>Service pages, menus, booking info.</span></div><div><b>Founders</b><span>Launch pages to test an idea.</span></div></div></section>
+</div>
+
+<div id="app">
+<header class="top"><span class="logo"><svg width="24" height="24" aria-hidden="true"><use href="#mm"/></svg>MINDMACHINE</span>
+<span class="pname" id="pname">Untitled project</span>
+<span class="status" role="status" aria-live="polite"><i class="dot" id="sdot"></i><span id="stxt">Unsaved Changes</span></span><span class="sp"></span>
+<button class="btn tabsm" id="tabbtn">PREVIEW / CHAT</button>
+<button class="btn" id="newtab" disabled>PREVIEW</button><button class="btn pri" id="pub" title="Download the HTML file to host it yourself">PUBLISH</button></header>
+<div class="main" id="main">
+<aside><h3>START BUILDING</h3><div class="sub">From idea to live product in four steps.</div>
+<div class="steps" id="steps"></div><div class="bar" aria-hidden="true"><i id="pbar" style="width:0"></i></div>
+<button class="btn" id="ex">TRY AN EXAMPLE</button><button class="btn" id="howb">HOW IT WORKS</button>
+<button class="btn" id="newp">NEW PROJECT</button></aside>
+<section class="center"><div class="chead"><b>MINDMACHINE WORKSPACE</b><div>Tell us what you want to build.</div></div>
+<div id="log" aria-live="polite"></div>
+<div class="act" id="act"><canvas id="cv" aria-hidden="true"></canvas><div class="tl" id="tl"></div><div class="ind" id="ind"><i></i></div><div id="amsg" style="font-size:12px;margin-top:6px;color:var(--mute)"></div></div>
+<div class="inp"><label for="inp" style="position:absolute;left:-9999px">Prompt</label><textarea id="inp" maxlength="4000" placeholder="Describe your idea, features, design, and goals..."></textarea>
+<div class="row"><span><span id="cc">0</span>/4000 · Enter to send, Shift+Enter for new line</span><span><button class="btn" id="cancel" style="display:none">CANCEL</button> <button class="btn pri" id="send" disabled>SEND</button></span></div></div></section>
+<section class="prev"><div class="phead"><b>LIVE PREVIEW</b>
+<span class="seg"><button data-v="100%" aria-pressed="true">Desktop</button><button data-v="768px" aria-pressed="false">Tablet</button><button data-v="390px" aria-pressed="false">Mobile</button></span>
+<span class="seg"><button data-t="pv" aria-pressed="true">Preview</button><button data-t="code" aria-pressed="false">Files</button></span><select id="fsel" aria-label="Project file" style="background:var(--panel);color:var(--text);border:1px solid var(--line);padding:5px"><option>index.html</option><option>README.md</option></select><button class="btn" id="fs">FULLSCREEN</button><button class="btn" id="zip">EXPORT ZIP</button>
+<button class="btn" id="refresh">REFRESH</button><button class="btn" id="copy">COPY</button><button class="btn" id="dl">DOWNLOAD</button></div>
+<div class="stage" id="stage"><div class="empty" id="empty"><div><b>YOUR IDEA WILL APPEAR HERE</b><div>Describe what you want to build to begin.</div></div></div>
+<iframe id="fr" title="Generated website preview" sandbox="allow-scripts allow-forms allow-modals" style="display:none"></iframe>
+<pre class="code" id="code" style="display:none"></pre></div>
+<div class="vers" id="vers"></div></section>
+</div></div>
+
+<dialog id="dlg"><b>HOW IT WORKS</b><p>1. Describe your site. 2. A model generates a single HTML file. 3. Preview it in an isolated sandbox and ask for changes. 4. Download the file and host it on any static host.</p><p style="color:var(--mute)">Backend, database, auth and automatic deployment are not part of this version.</p><button class="btn" onclick="dlg.close()">CLOSE</button></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const PH=["ANALYZING","GENERATING","VALIDATING","PREVIEW READY"];
+const EX=["Landing page for a small bakery called Crumb & Co: hero, menu with prices, opening hours, location section and a contact form. Warm colors, friendly serif headings.","Portfolio site for a computer science student: about, three projects, skills and contact links. Dark, minimal.","Landing page for a startup, PulseDesk, a customer-support inbox tool: hero, features, pricing section with 3 plans, FAQ and waitlist signup form with validation. Dark with violet accents.","Interactive loan EMI calculator with sliders, a monthly payment breakdown and a clean modern design."];
+const CARDS=[["Build a Business Website",EX[0]],["Create a Student Project",EX[1]],["Launch a Startup Landing Page",EX[2]],["Build a Full-Stack Web Application","I need a full-stack web app with login and a database for tracking orders."]];
+let S={name:"Untitled project",msgs:[],vers:[],cur:-1};
+let busy=false,ctl=null,sample=null,saveOk=true,phase=-1,stage=1,anim=null;
+function mkSteps(){const T=[["Describe Your Idea","Tell MINDMACHINE what you want to build. Describe your audience, features, style, and business goals."],["Let It Build","MINDMACHINE analyzes your requirements and generates your page."],["Inspect and Refine","Preview the result, test the interface, and request changes through the conversation."],["Publish Your Product","Download the file and host it on a static hosting provider."]];
+$("steps").innerHTML=T.map((t,i)=>`<div class="step ${i+1<stage?'done':i+1==stage?'on':''}" title="${t[1]}"><span class="num">${i+1<stage?'✓':'0'+(i+1)}</span><div><b>${t[0]}</b><small>${t[1]}</small></div></div>`).join("");$("pbar").style.width=((stage-1)/3*100)+"%"}
+function setStatus(k){const m={saved:["Saved","var(--ok)"],saving:["Saving","var(--warn)"],unsaved:["Unsaved Changes","var(--mute)"],failed:["Save Failed","var(--err)"]}[k];$("stxt").textContent=m[0];$("sdot").style.background=m[1]}
+function persist(){setStatus("saving");try{localStorage.setItem("mm_project",JSON.stringify(S));if(localStorage.getItem("mm_project")===null)throw 0;setStatus("saved")}catch(e){setStatus("failed")}}
+function load(){try{const r=localStorage.getItem("mm_project");if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.msgs)&&Array.isArray(o.vers)){S=o;setStatus("saved")}}}catch(e){}}
+function t(ts){return new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function renderLog(){const L=$("log");if(!S.msgs.length){L.innerHTML=`<div class="msg a">Every great product starts with an idea.\n\nDescribe your business, website, or application. I'll help you turn it into a working digital product.</div><div class="cards">${CARDS.map((c,i)=>`<button data-c="${i}">${c[0]}</button>`).join("")}</div>`;L.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{$("inp").value=CARDS[b.dataset.c][1];$("inp").focus();upd()})}
+else L.innerHTML=S.msgs.map(m=>`<div class="msg ${m.r}">${esc(m.t)}<time>${t(m.ts)}</time></div>`).join("");L.scrollTop=L.scrollHeight}
+function addMsg(r,tx){S.msgs.push({r,t:tx,ts:Date.now()});renderLog();persist()}
+function renderVers(){const v=S.vers;$("vers").innerHTML=v.length?`Version <b style="color:var(--text)">${S.cur+1}</b> of ${v.length} `+v.map((x,i)=>`<button class="btn" style="padding:3px 8px" data-v="${i}" ${i==S.cur?'disabled':''}>v${i+1}</button>`).join(""):"";
+$("vers").querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{S.cur=+b.dataset.v;show();persist();renderVers()})}
+function html(){return S.cur>=0?S.vers[S.cur].html:null}
+function show(){const h=html();$("empty").style.display=h?"none":"grid";const fr=$("fr");fr.style.display=h&&$("code").style.display=="none"?"block":"none";
+if(h){fr.srcdoc=h;codeUpd()}["newtab","copy","dl","refresh"].forEach(i=>$(i).disabled=!h);$("pname").textContent=S.name}
+function upd(){const v=$("inp").value;$("cc").textContent=v.length;$("send").disabled=busy||!v.trim()||!sample}
+/* activity graph: driven by real phase + data volume only */
+function draw(){const c=$("cv"),w=c.width=c.clientWidth*2,h=c.height=92,x=c.getContext("2d");let n=0;const nodes=PH.map((_,i)=>({x:30+i*(w-60)/3,y:h/2}));
+function f(){x.clearRect(0,0,w,h);x.strokeStyle="#232838";x.lineWidth=2;x.beginPath();nodes.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.stroke();
+nodes.forEach((p,i)=>{x.fillStyle=i<phase?"#36D399":i==phase?"#8B5CF6":"#12151E";x.strokeStyle=i<=phase?"#8B5CF6":"#232838";x.beginPath();x.arc(p.x,p.y,i==phase?10+Math.sin(n/10)*2:7,0,7);x.fill();x.stroke()});n++;anim=requestAnimationFrame(f)}
+cancelAnimationFrame(anim);f()}
+function tl(bad){$("tl").innerHTML=PH.map((p,i)=>`<span class="${bad===i?'bad':i<phase?'ok':i==phase?'cur':''}">${p}</span>`).join("")}
+function setPhase(i,msg,bad){phase=i;tl(bad);$("amsg").textContent=msg}
+function parse(txt){const g=k=>{const m=txt.match(new RegExp("<"+k+">([\\s\\S]*?)</"+k+">"));return m?m[1].trim():""};let h=g("html");if(!h){const m=txt.match(/<!DOCTYPE[\s\S]*<\/html>/i);h=m?m[0]:""}return{summary:g("summary"),assumptions:g("assumptions"),name:g("name"),html:h.replace(/^```html\s*|```$/g,"").trim()}}
+function validate(h){if(h.length<200)return"Output too short to be a page.";const d=new DOMParser().parseFromString(h,"text/html");if(!d.body||!d.body.children.length)return"Output has no body content.";if(/<script[^>]+src=["']https?:/i.test(h)&&false)return"";return""}
+const SYS=`You are MINDMACHINE's generation engine. Produce ONE self-contained, responsive, accessible HTML file (inline CSS and JS only, no external scripts, no external images; use CSS/SVG/emoji for visuals). Use realistic copy for the user's brief, never lorem ipsum. Contact/signup forms must validate client-side and show an on-page confirmation, and must not pretend to send data anywhere. If the user needs a backend, database, login or payments, build only the front end and state clearly in <assumptions> what is missing.
+If CURRENT_HTML is supplied, treat the request as a modification: change only what was asked and preserve everything else.
+Reply in exactly this format and nothing else:
+<name>short project name</name>
+<summary>2-4 sentences on what you built or changed</summary>
+<assumptions>bullet-like list of assumptions and limitations</assumptions>
+<html>the complete HTML document starting with <!DOCTYPE html></html>`;
+async function run(prompt){busy=true;upd();$("send").textContent="SENDING…";$("act").style.display="block";$("cancel").style.display="";
+ctl=new AbortController();stage=2;mkSteps();draw();setPhase(0,"Analyzing your requirements...");
+const cur=html(),isRev=!!cur;const input=SYS+"\n\n"+(isRev?"MODE: modification\nCURRENT_HTML:\n"+cur+"\n\n":"MODE: new project\n")+"USER REQUEST:\n"+prompt;
+let started=false;
+try{const r=await sample(input,{signal:ctl.signal,cache:false,modelTier:"complex",onText:({text})=>{if(!started){started=true;setPhase(1,"Generating application components...")}$("amsg").textContent="Generating application components... "+Math.round(text.length/1024)+" KB received"}});
+if(r.truncated)throw{code:"truncated",message:"The model output was cut off before the page was complete. Try a shorter or simpler request."};
+setPhase(2,"Validating output...");const p=parse(r.text);if(!p.html)throw{code:"bad_output",message:"The model reply did not contain a complete HTML page."};
+const bad=validate(p.html);if(bad)throw{code:"bad_output",message:bad};
+S.vers.push({html:p.html,prompt,ts:Date.now()});S.cur=S.vers.length-1;if(!isRev&&p.name)S.name=p.name.slice(0,60);
+setPhase(3,"Preview ready.");phase=4;tl();show();renderVers();stage=3;mkSteps();
+addMsg("a",(p.summary||"Done.")+(p.assumptions?"\n\nAssumptions & limitations:\n"+p.assumptions:"")+"\n\nChecks run: the output was parsed as HTML and rendered. No build, lint or automated tests were run. Version "+(S.cur+1)+" saved.");
+}catch(e){const c=e&&e.code;let m=e&&e.message||"Unexpected error.";if(c==="aborted"||e&&e.name==="AbortError")m="Generation cancelled. Your previous version is unchanged.";else if(c==="rate_limited")m="Rate limit reached. Wait a moment and send again.";else if(c==="not_granted")m="Permission to use Claude was not granted. Allow it and retry.";
+setPhase(phase<0?0:phase,"Failed.",phase<0?0:phase);addMsg("e","Failed during "+PH[Math.max(phase,0)]+": "+m+(S.cur>=0?"\nLast working version (v"+(S.cur+1)+") is still in the preview.":""));
+}finally{busy=false;ctl=null;$("send").textContent="SEND";$("cancel").style.display="none";$("ind").style.display="none";setTimeout(()=>{if(!busy){$("act").style.display="none";$("ind").style.display="";cancelAnimationFrame(anim)}},2500);upd();persist()}}
+function submit(){const v=$("inp").value.trim();if(!v||busy||!sample)return;if(S.msgs.length===0)S.name=v.slice(0,40);addMsg("u",v);$("inp").value="";upd();setStatus("unsaved");run(v)}
+function enter(){$("landing").style.display="none";$("app").style.display="flex";document.body.style.overflow="hidden";}
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=enter);
+$("send").onclick=submit;$("inp").oninput=upd;$("inp").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submit()}};
+$("cancel").onclick=()=>ctl&&ctl.abort();
+$("ex").onclick=()=>{$("inp").value=EX[Math.floor(Math.random()*EX.length)];upd();$("inp").focus()};
+$("howb").onclick=()=>$("dlg").showModal();
+$("newp").onclick=()=>{if(busy)return;S={name:"Untitled project",msgs:[],vers:[],cur:-1};stage=1;mkSteps();renderLog();renderVers();show();persist()};
+$("tabbtn").onclick=()=>{const m=$("main");if(innerWidth<=760)m.classList.toggle("showside");else m.classList.toggle("showp")};
+$("pub").onclick=()=>$("dl").click();
+document.querySelectorAll("[data-v]").forEach(b=>{if(b.closest(".seg"))b.onclick=()=>{document.querySelectorAll(".seg [data-v]").forEach(x=>x.setAttribute("aria-pressed",x==b));$("fr").style.width=b.dataset.v}});
+document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-t]").forEach(x=>x.setAttribute("aria-pressed",x==b));const c=b.dataset.t=="code";$("code").style.display=c&&html()?"block":"none";$("fr").style.display=!c&&html()?"block":"none"});
+$("refresh").onclick=()=>{$("fr").srcdoc=html()||""};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("code").textContent);$("copy").textContent="COPIED"}catch(e){$("copy").textContent="COPY FAILED"}setTimeout(()=>$("copy").textContent="COPY",1500)};
+$("dl").onclick=async()=>{const h=html();if(!h)return;const name=(S.name||"site").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+".html";try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:name,data:h});stage=4;mkSteps()}catch(e){addMsg("e","Download was unavailable or declined. Use COPY on the Code tab instead.")}};
+$("newtab").onclick=()=>{const w=open("about:blank");if(w){w.document.write(html());w.document.close()}};
+function readme(){return `# ${S.name}\n\nGenerated by MINDMACHINE.\n\n## Run locally\nOpen index.html in a browser. No build step or dependencies.\n\n## Deploy\nUpload index.html to any static host (Netlify Drop, GitHub Pages, Cloudflare Pages, Vercel).\n\n## Limitations\nSingle static file. No backend, database or authentication. Forms validate in the browser only and do not send data anywhere. No environment variables are used, so no .env file is needed.\n`}
+function codeUpd(){const h=html();if(!h)return;$("code").textContent=$("fsel").value=="README.md"?readme():h}
+$("fsel").onchange=codeUpd;
+$("fs").onclick=()=>{const e=$("stage");(document.fullscreenElement?document.exitFullscreen():e.requestFullscreen&&e.requestFullscreen()).catch(()=>addMsg("e","Fullscreen is not supported here."))};
+$("zip").onclick=async()=>{const h=html();if(!h)return addMsg("e","Nothing to export yet. Generate a project first.");try{if(!window.JSZip)throw 0;const z=new JSZip();z.file("index.html",h);z.file("README.md",readme());const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"mindmachine-project.zip",data:await z.generateAsync({type:"uint8array"})});stage=4;mkSteps()}catch(e){if(!e||e.code!=="declined")addMsg("e","ZIP export failed or is unavailable here. Use DOWNLOAD or COPY instead.")}};
+$("stage").style.background="";
+(function(){const c=$("hv"),x=c.getContext("2d"),N=[],m={x:-999,y:-999};let W,H,rm=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function rs(){const r=c.getBoundingClientRect();W=c.width=r.width*devicePixelRatio;H=c.height=r.height*devicePixelRatio}rs();addEventListener("resize",rs);
+for(let i=0;i<46;i++)N.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0007,vy:(Math.random()-.5)*.0007});
+c.onmousemove=e=>{const r=c.getBoundingClientRect();m.x=(e.clientX-r.left)/r.width;m.y=(e.clientY-r.top)/r.height};c.onmouseleave=()=>{m.x=m.y=-999};
+let t=0;function f(){t++;x.clearRect(0,0,W,H);x.strokeStyle="#ffffff0d";x.lineWidth=1;const g=W/12;for(let i=1;i<12;i++){x.beginPath();x.moveTo(i*g,0);x.lineTo(i*g,H);x.moveTo(0,i*g);x.lineTo(W,i*g);x.stroke()}
+N.forEach(n=>{if(!rm){n.x+=n.vx;n.y+=n.vy}if(n.x<0||n.x>1)n.vx*=-1;if(n.y<0||n.y>1)n.vy*=-1;const dx=n.x-m.x,dy=n.y-m.y,d=Math.hypot(dx,dy);if(d<.15&&d>0&&!rm){n.x+=dx/d*.003;n.y+=dy/d*.003}});
+for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const a=N[i],b=N[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<.2){x.strokeStyle=`rgba(139,92,246,${(1-d/.2)*.7})`;x.beginPath();x.moveTo(a.x*W,a.y*H);x.lineTo(b.x*W,b.y*H);x.stroke()}}
+N.forEach((n,i)=>{x.fillStyle=i%7==0?"#45A3FF":"#8B5CF6";x.beginPath();x.arc(n.x*W,n.y*H,(i%7==0?4:2.5)*devicePixelRatio+(rm?0:Math.sin(t/20+i)),0,7);x.fill()});
+if(!rm){const p=N[t/40%N.length|0],q=N[(t/40+1)%N.length|0],k=t%40/40;x.fillStyle="#F5F7FF";x.beginPath();x.arc((p.x+(q.x-p.x)*k)*W,(p.y+(q.y-p.y)*k)*H,3*devicePixelRatio,0,7);x.fill()}
+requestAnimationFrame(f)}f()})();
+load();mkSteps();renderLog();renderVers();show();upd();if(S.cur>=0)stage=3;mkSteps();
+(async()=>{try{sample=await claude.use("sample")}catch(e){}if(!sample){addMsg("e","Generation is unavailable: this page could not reach Claude. Open it from the published link while signed in to claude.ai.");}upd()})();
+</script></body></html>
